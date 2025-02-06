@@ -154,8 +154,8 @@
       background: #c82333;
     }
     #tts-add-form {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
+      display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       margin: 15px 0;
       padding: 15px;
@@ -164,25 +164,36 @@
       border: 1px solid #e0e0e0;
       align-items: center;
     }
-    @media (max-width: 600px) {
-      #tts-add-form {
-        grid-template-columns: 1fr;
-      }
-    }
     #tts-username {
-      width: 100%;
-      min-width: 0;
-      padding: 8px 12px;
-      border: 1px solid #ddd;
+      flex: 1 1 100%;
+      padding: 12px;
+      border: 2px solid #6441A4;
       border-radius: 4px;
-      font-size: 14px;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
     #tts-voice-select {
-      min-width: 200px;
-      padding: 8px;
-      border: 1px solid #ddd;
+      flex: 1 1 100%;
+      padding: 12px;
+      border: 2px solid #6441A4;
       border-radius: 4px;
-      font-size: 14px;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    #add-user-btn {
+      flex: 0 0 auto;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      min-width: 150px;
+      align-self: flex-end;
+    }
+    #add-user-btn:hover {
+      background: #218838;
     }
     .control-btn {
       padding: 8px 16px;
@@ -576,7 +587,7 @@
       <form id="tts-add-form">
         <input type="text" id="tts-username" placeholder="Enter username for TTS">
         <select id="tts-voice-select"></select>
-        <button type="submit" class="control-btn add-btn">Add User</button>
+        <button type="submit" id="add-user-btn" class="control-btn add-btn">Add User</button>
       </form>
       <div class="tts-user-list" id="tts-users"></div>
       <div class="queue-section">
