@@ -140,10 +140,12 @@
         </div>
       </div>
       <!-- TTS Add User Form -->
-      <form id="tts-add-form">
-        <input type="text" id="tts-username" placeholder="Enter username for TTS">
-        <select id="tts-voice-select"></select>
-        <button type="submit" id="add-user-btn" class="add-user-btn control-btn add-btn">Add User</button>
+      <form id="tts-add-form" style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="text" id="tts-username" placeholder="Enter username for TTS" style="flex:1;">
+          <button type="submit" id="add-user-btn" class="add-user-btn control-btn add-btn">Add User</button>
+        </div>
+        <select id="tts-voice-select" style="width: 100%; max-width: 100%; box-sizing: border-box;"></select>
       </form>
       <div class="tts-user-list" id="tts-users"></div>
       <!-- TTS and Queue Status -->
