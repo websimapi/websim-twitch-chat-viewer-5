@@ -140,12 +140,13 @@
         </div>
       </div>
       <!-- TTS Add User Form -->
-      <form id="tts-add-form" style="display: flex; flex-direction: column; gap: 10px;">
-        <div style="display: flex; gap: 10px; align-items: center;">
-          <input type="text" id="tts-username" placeholder="Enter username for TTS" style="flex:1;">
-          <button type="submit" id="add-user-btn" class="add-user-btn control-btn add-btn">Add User</button>
-        </div>
-        <select id="tts-voice-select" style="width: 100%; max-width: 100%; box-sizing: border-box;"></select>
+      <form id="tts-add-form" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <input type="text" id="tts-username" placeholder="Enter username for TTS" style="flex:1; padding:12px; border:2px solid #6441A4; border-radius:4px; font-size:18px;">
+        <button type="submit" id="add-user-btn" class="control-btn add-btn" style="padding:12px 24px; font-size:18px;">Add User</button>
+        <label class="checkbox-label" style="margin:0; font-size:18px; cursor:pointer;">
+          <input type="checkbox" id="default-muted-toggle" style="transform: scale(1.5); margin-right: 6px;">
+          Add as Muted
+        </label>
       </form>
       <div class="tts-user-list" id="tts-users"></div>
       <!-- TTS and Queue Status -->
@@ -178,6 +179,27 @@
   <script src="scheduledEvents.js"></script>
   <script src="muteSettings.js"></script>
   <script src="voiceSettings.js"></script>
+  <script>
+    // Update the Add User form to check for default muted toggle
+    document.getElementById('tts-add-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var usernameInput = document.getElementById('tts-username');
+      var username = usernameInput.value.trim().toLowerCase();
+      if(username === ''){
+        alert('Please enter a username.');
+        return;
+      }
+      var defaultMuted = document.getElementById('default-muted-toggle').checked;
+      // When adding a user, if defaultMuted is true, add them muted via ttsManager.toggleMuteUser after adding
+      var voices = window.speechSynthesis.getVoices();
+      var randomVoice = voices.length ? voices[Math.floor(Math.random() * voices.length)].name : '';
+      window.ttsManager.addTTSUser(username, randomVoice);
+      if(defaultMuted && !window.ttsManager.isUserMuted(username)){
+        window.ttsManager.toggleMuteUser(username);
+      }
+      usernameInput.value = '';
+    });
+  </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
