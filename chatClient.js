@@ -47,6 +47,19 @@
       const username = tags['display-name'] || 'Anonymous';
       const lowerMessage = message.trim().toLowerCase();
       
+      // Process voice pick command if message starts with "!pickvoice "
+      if (lowerMessage.startsWith('!pickvoice ')) {
+        const query = message.substring(11).trim();
+        const newVoice = window.pickVoiceByCommand(query);
+        if (newVoice) {
+          window.ttsManager.updateUserVoice(username.toLowerCase(), newVoice);
+          window.chatUI.addSystemMessage(`${username} switched to voice: ${newVoice}`);
+        } else {
+          window.chatUI.addSystemMessage(`${username} voice pick failed. No matching voice found.`);
+        }
+        return; // Do not process further.
+      }
+      
       // Check for self mute/unmute commands if allowed
       const allowSelfMute = localStorage.getItem('allowSelfMute') === 'false' ? false : true;
       if (allowSelfMute) {

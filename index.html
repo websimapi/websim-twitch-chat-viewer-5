@@ -466,92 +466,7 @@
         <button id="scheduled-events-btn" class="control-btn add-btn">Scheduled Events</button>
         <button id="export-import-settings-btn" class="control-btn add-btn">Export/Import Settings</button>
         <button id="mute-settings-btn" class="control-btn add-btn">Mute Settings</button>
-      </div>
-      <div id="gamble-settings-modal" class="modal">
-        <div class="modal-content">
-          <h4>Gamble Voice Settings</h4>
-          <div id="gamble-unsaved-warning" style="display:none; color:red; text-align:center; margin-bottom:10px;"></div>
-          <div class="settings-form">
-            <label class="checkbox-label">
-              Enable Gamble Voice:
-              <input type="checkbox" id="gamble-enabled">
-            </label>
-            <label>
-              Cooldown (seconds):
-              <input type="number" id="gamble-cooldown" min="0" value="0">
-            </label>
-            <label>
-              Command Triggers (comma separated):
-              <input type="text" id="gamble-triggers" placeholder="e.g., !gamblevoice, !gv, bonesd3TC">
-            </label>
-            <div style="display: flex; gap:10px; flex-wrap: wrap;">
-              <button id="save-gamble-settings" class="control-btn add-btn">Save Settings</button>
-              <button id="restore-gamble-defaults" class="restore-btn">Restore Default Triggers</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="custom-commands-modal" class="modal">
-        <div class="modal-content">
-          <h4 class="custom-command-header">Custom Commands</h4>
-          <button id="add-custom-command-btn" class="add-custom-command-btn">Add New Command</button>
-          <form id="custom-commands-form">
-            <div id="custom-commands-list"></div>
-            <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end;">
-              <button type="button" id="save-custom-commands" class="control-btn add-btn">Save Commands</button>
-              <button type="button" id="close-custom-commands" class="control-btn clear-btn">Close</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div id="scheduled-events-modal" class="modal">
-        <div class="modal-content">
-          <h4>Scheduled Events</h4>
-          <div id="scheduled-unsaved-warning" style="display:none; color:red; text-align:center; margin-bottom:10px;"></div>
-          <button id="add-scheduled-event-btn" class="add-scheduled-event-btn">Add New Event</button>
-          <div id="scheduled-events-list"></div>
-          <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end;">
-            <button type="button" id="save-scheduled-events" class="control-btn add-btn">Save Events</button>
-            <button type="button" id="close-scheduled-events" class="control-btn clear-btn">Close</button>
-          </div>
-        </div>
-      </div>
-      <div id="export-import-modal" class="modal">
-        <div class="modal-content">
-          <h4>Export / Import Settings</h4>
-          <div style="margin-bottom: 15px; text-align: center;">
-            <button id="download-export-btn" class="control-btn add-btn">Download Settings JSON</button>
-          </div>
-          <div style="margin-bottom: 15px; text-align: center;">
-            <input type="file" id="import-settings-file" accept=".json">
-          </div>
-          <div style="text-align:right;">
-            <button id="close-export-import-btn" class="control-btn clear-btn">Close</button>
-          </div>
-        </div>
-      </div>
-      <div id="mute-settings-modal" class="modal">
-        <div class="modal-content">
-          <h4>Mute Settings</h4>
-          <div class="settings-form">
-            <label class="checkbox-label">
-              Allow Self Mute Commands:
-              <input type="checkbox" id="allow-self-mute-toggle">
-            </label>
-            <label>
-              Default Unmute Commands (comma separated):
-              <input type="text" id="self-unmute-commands" placeholder="e.g., !tts, !tts-on, !unmute, bonesd3TS">
-            </label>
-            <label>
-              Default Mute Commands (comma separated):
-              <input type="text" id="self-mute-commands" placeholder="e.g., !tts-off, !mute, bonesd3TO">
-            </label>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button id="save-mute-settings" class="control-btn add-btn">Save Settings</button>
-              <button id="close-mute-settings" class="control-btn clear-btn">Close</button>
-            </div>
-          </div>
-        </div>
+        <button id="voice-settings-btn" class="control-btn add-btn">Voice Settings</button>
       </div>
       <form id="tts-add-form">
         <input type="text" id="tts-username" placeholder="Enter username for TTS">
@@ -587,6 +502,7 @@
   <script src="exportImport.js"></script>
   <script src="scheduledEvents.js"></script>
   <script src="muteSettings.js"></script>
+  <script src="voiceSettings.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
