@@ -2,7 +2,7 @@
   const voiceSettingsBtn = document.getElementById('voice-settings-btn');
   const voiceSettingsModal = document.getElementById('voice-settings-modal');
   const voicePickToggle = document.getElementById('voice-pick-toggle');
-  const blacklistedVoicesSelect = document.getElementById('blacklisted-voices');
+  const blacklistedVoicesContainer = document.getElementById('blacklisted-voices');
   const saveVoiceSettingsBtn = document.getElementById('save-voice-settings');
   const closeVoiceSettingsBtn = document.getElementById('close-voice-settings');
 
@@ -10,30 +10,45 @@
     const pickVoiceEnabled = localStorage.getItem('pickVoiceEnabled');
     voicePickToggle.checked = (pickVoiceEnabled === 'true');
     const voices = window.speechSynthesis.getVoices();
-    blacklistedVoicesSelect.innerHTML = '';
+    blacklistedVoicesContainer.innerHTML = '';
     const blacklistedStr = localStorage.getItem('blacklistedVoices');
     let storedBlacklist = [];
     if (blacklistedStr) {
       try {
         storedBlacklist = JSON.parse(blacklistedStr);
-      } catch (e) {}
+      } catch (e) {
+        console.error(e);
+      }
     }
     voices.forEach(voice => {
-      const option = document.createElement('option');
-      option.value = voice.name;
-      option.textContent = `${voice.name} (${voice.lang})`;
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.alignItems = 'center';
+      wrapper.style.gap = '8px';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = voice.name;
+      checkbox.id = 'voice-checkbox-' + voice.name.replace(/\s/g, '-');
       if (storedBlacklist.includes(voice.name)) {
-        option.selected = true;
+        checkbox.checked = true;
       }
-      blacklistedVoicesSelect.appendChild(option);
+      const label = document.createElement('label');
+      label.setAttribute('for', checkbox.id);
+      label.textContent = `${voice.name} (${voice.lang})`;
+      wrapper.appendChild(checkbox);
+      wrapper.appendChild(label);
+      blacklistedVoicesContainer.appendChild(wrapper);
     });
   }
 
   function saveVoiceSettings() {
     const pickEnabled = voicePickToggle.checked;
     localStorage.setItem('pickVoiceEnabled', pickEnabled);
-    const selectedOptions = Array.from(blacklistedVoicesSelect.selectedOptions).map(option => option.value);
-    localStorage.setItem('blacklistedVoices', JSON.stringify(selectedOptions));
+    const checkboxes = blacklistedVoicesContainer.querySelectorAll('input[type="checkbox"]');
+    const selectedVoices = Array.from(checkboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+    localStorage.setItem('blacklistedVoices', JSON.stringify(selectedVoices));
 
     applyVoiceBlacklist();
     updateVoiceSettingsButton();
@@ -61,6 +76,7 @@
   closeVoiceSettingsBtn.addEventListener('click', () => {
     voiceSettingsModal.style.display = 'none';
   });
+
   window.addEventListener('click', (e) => {
     if (e.target === voiceSettingsModal) {
       voiceSettingsModal.style.display = 'none';
@@ -73,8 +89,8 @@
     let blacklist = [];
     if (blacklistedStr) {
       try {
-        blacklist = JSON.parse(blacklistedStr);
-      } catch (e) {}
+         blacklist = JSON.parse(blacklistedStr);
+      } catch(e){}
     }
     return allVoices.filter(v => !blacklist.includes(v.name));
   }
