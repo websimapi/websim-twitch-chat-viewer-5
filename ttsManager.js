@@ -321,17 +321,11 @@
   if (ttsAddForm) {
     ttsAddForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      const usernameInput = document.getElementById('tts-username');
-      const username = usernameInput.value.toLowerCase().trim();
+      const username = document.getElementById('tts-username').value.toLowerCase().trim();
       const voiceName = document.getElementById('tts-voice-select').value;
       if (username) {
         addTTSUser(username, voiceName);
-        // Check if "Add User Muted" is toggled
-        const addUserMutedToggle = document.getElementById('add-user-muted-toggle');
-        if (addUserMutedToggle && addUserMutedToggle.checked && !isUserMuted(username)) {
-          toggleMuteUser(username);
-        }
-        usernameInput.value = '';
+        document.getElementById('tts-username').value = '';
       }
     });
   }
