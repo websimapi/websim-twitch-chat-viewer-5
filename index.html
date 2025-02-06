@@ -114,51 +114,54 @@
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 15px;
     }
-    /* Updated TTS Add Form added inline items */
+    /* Updated TTS Add Form styling */
     #tts-add-form {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 10px;
       margin: 15px 0;
       padding: 15px;
       background: white;
       border-radius: 6px;
       border: 1px solid #e0e0e0;
-      flex-wrap: wrap;
+    }
+    .tts-add-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: nowrap;
     }
     #tts-username {
-      flex: 1 1 auto;
+      flex: 1;
       padding: 12px;
       border: 2px solid #6441A4;
       border-radius: 4px;
       font-size: 18px;
-      margin-bottom: 0;
     }
-    #tts-voice-select {
-      flex: 1 1 auto;
-      padding: 12px;
-      border: 2px solid #6441A4;
-      border-radius: 4px;
-      font-size: 18px;
-      margin-bottom: 0;
-    }
-    /* Make Add User button square and to the right of input and select */
     #add-user-btn {
-      flex: 0 0 auto;
-      width: 60px;
-      height: 60px;
-      font-size: 14px;
+      padding: 12px 24px;
+      font-size: 18px;
       background: #28a745;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      white-space: nowrap;
     }
     #add-user-btn:hover {
       background: #218838;
+    }
+    /* Ensure dropdown does not overflow in Microsoft Edge */
+    #tts-voice-select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: 2px solid #6441A4;
+      border-radius: 4px;
+      font-size: 18px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .control-btn {
       padding: 8px 16px;
@@ -550,9 +553,11 @@
         </div>
       </div>
       <form id="tts-add-form">
-        <input type="text" id="tts-username" placeholder="Enter username for TTS">
+        <div class="tts-add-row">
+          <input type="text" id="tts-username" placeholder="Enter username for TTS">
+          <button type="submit" id="add-user-btn" class="control-btn add-btn">Add User</button>
+        </div>
         <select id="tts-voice-select"></select>
-        <button type="submit" id="add-user-btn" class="control-btn add-btn">Add</button>
       </form>
       <div class="tts-user-list" id="tts-users"></div>
       <div class="queue-section">
