@@ -47,19 +47,6 @@
       const username = tags['display-name'] || 'Anonymous';
       const lowerMessage = message.trim().toLowerCase();
       
-      // Process voice pick command if message starts with "!pickvoice "
-      if (lowerMessage.startsWith('!pickvoice ')) {
-        const query = message.substring(11).trim();
-        const newVoice = window.pickVoiceByCommand(query);
-        if (newVoice) {
-          window.ttsManager.updateUserVoice(username.toLowerCase(), newVoice);
-          window.chatUI.addSystemMessage(`${username} switched to voice: ${newVoice}`);
-        } else {
-          window.chatUI.addSystemMessage(`${username} voice pick failed. No matching voice found.`);
-        }
-        return; // Do not process further.
-      }
-      
       // Check for self mute/unmute commands if allowed
       const allowSelfMute = localStorage.getItem('allowSelfMute') === 'false' ? false : true;
       if (allowSelfMute) {
@@ -69,14 +56,34 @@
           if (!window.ttsManager.isUserMuted(username)) {
             window.ttsManager.toggleMuteUser(username);
           }
-          return; // Do not process further
+          return;
         }
         if (unmuteCommands.includes(lowerMessage)) {
           if (window.ttsManager.isUserMuted(username)) {
             window.ttsManager.toggleMuteUser(username);
           }
-          return; // Do not process further
+          return;
         }
+      }
+      
+      // Process voice pick command if enabled
+      if (lowerMessage.startsWith("!pickvoice ")) {
+        if (localStorage.getItem("pickVoiceEnabled") === "true") {
+          const voiceQuery = lowerMessage.substring("!pickvoice ".length).trim();
+          let blacklistedVoices = [];
+          try {
+            blacklistedVoices = JSON.parse(localStorage.getItem("blacklistedVoices") || "[]");
+          } catch (e) {}
+          const voices = window.speechSynthesis.getVoices().filter(v => !blacklistedVoices.includes(v.name));
+          const matchedVoice = voices.find(v => v.name.toLowerCase().includes(voiceQuery));
+          if (matchedVoice) {
+            window.ttsManager.updateUserVoice(username, matchedVoice.name);
+            window.chatUI.addSystemMessage(`${username} switched voice to ${matchedVoice.name}`);
+          } else {
+            window.chatUI.addSystemMessage(`No matching voice found for query: ${voiceQuery}`);
+          }
+        }
+        return;
       }
       
       if (window.getCustomCommand) {

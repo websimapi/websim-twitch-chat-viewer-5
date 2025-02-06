@@ -33,7 +33,6 @@
   // Populate the Custom Commands Modal UI with a more compact and user-friendly layout.
   function populateCustomCommandsUI() {
     const listDiv = document.getElementById('custom-commands-list');
-    if (!listDiv) return; // safety check if element doesn't exist
     listDiv.innerHTML = '';
 
     if (commands.length === 0) {
@@ -196,11 +195,11 @@
     const ttsDetails = row.querySelector('.tts-details');
     const audioDetails = row.querySelector('.audio-details');
     if (cmd.type === 'tts') {
-      if(ttsDetails) ttsDetails.style.display = 'flex';
-      if(audioDetails) audioDetails.style.display = 'none';
+      ttsDetails.style.display = 'flex';
+      audioDetails.style.display = 'none';
     } else {
-      if(ttsDetails) ttsDetails.style.display = 'none';
-      if(audioDetails) audioDetails.style.display = 'flex';
+      ttsDetails.style.display = 'none';
+      audioDetails.style.display = 'flex';
     }
   }
 
@@ -217,38 +216,29 @@
     populateCustomCommandsUI();
   }
 
-  // Add event listeners safely (check if element exists before adding listener)
-  const addCustomCommandBtn = document.getElementById('add-custom-command-btn');
-  if (addCustomCommandBtn) {
-    addCustomCommandBtn.addEventListener('click', () => {
-      addNewCommand();
-    });
-  }
+  document.getElementById('add-custom-command-btn').addEventListener('click', () => {
+    addNewCommand();
+  });
 
-  const saveCustomCommandsBtn = document.getElementById('save-custom-commands');
-  if (saveCustomCommandsBtn) {
-    saveCustomCommandsBtn.addEventListener('click', () => {
-      saveCommands();
-      alert('Custom commands saved.');
-    });
-  }
+  document.getElementById('save-custom-commands').addEventListener('click', () => {
+    saveCommands();
+    alert('Custom commands saved.');
+  });
 
-  const closeCustomCommandsBtn = document.getElementById('close-custom-commands');
-  if (closeCustomCommandsBtn) {
-    closeCustomCommandsBtn.addEventListener('click', () => {
-      const modal = document.getElementById('custom-commands-modal');
-      if (modal) modal.style.display = 'none';
-    });
-  }
+  document.getElementById('close-custom-commands').addEventListener('click', () => {
+    document.getElementById('custom-commands-modal').style.display = 'none';
+  });
+
+  document.getElementById('custom-commands-btn').addEventListener('click', () => {
+    document.getElementById('custom-commands-modal').style.display = 'block';
+  });
 
   const customCommandsModal = document.getElementById('custom-commands-modal');
-  if (customCommandsModal) {
-    window.addEventListener('click', (e) => {
-      if (e.target === customCommandsModal) {
-        customCommandsModal.style.display = 'none';
-      }
-    });
-  }
+  window.addEventListener('click', (e) => {
+    if (e.target === customCommandsModal) {
+      customCommandsModal.style.display = 'none';
+    }
+  });
 
   window.refreshCustomCommandsUI = populateCustomCommandsUI;
   window.loadCustomCommands = loadCommands;
