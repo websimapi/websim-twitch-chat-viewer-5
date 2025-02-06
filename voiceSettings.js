@@ -2,31 +2,38 @@
   const voiceSettingsBtn = document.getElementById('voice-settings-btn');
   const voiceSettingsModal = document.getElementById('voice-settings-modal');
   const voicePickToggle = document.getElementById('voice-pick-toggle');
-  const blacklistedVoicesInput = document.getElementById('blacklisted-voices');
+  const blacklistedVoicesSelect = document.getElementById('blacklisted-voices');
   const saveVoiceSettingsBtn = document.getElementById('save-voice-settings');
   const closeVoiceSettingsBtn = document.getElementById('close-voice-settings');
 
   function loadVoiceSettings() {
     const pickVoiceEnabled = localStorage.getItem('pickVoiceEnabled');
     voicePickToggle.checked = (pickVoiceEnabled === 'true');
-    const blacklistedVoices = localStorage.getItem('blacklistedVoices');
-    let blacklistedVoicesList = [];
-    if (blacklistedVoices) {
+    const voices = window.speechSynthesis.getVoices();
+    blacklistedVoicesSelect.innerHTML = '';
+    const blacklistedStr = localStorage.getItem('blacklistedVoices');
+    let storedBlacklist = [];
+    if (blacklistedStr) {
       try {
-        blacklistedVoicesList = JSON.parse(blacklistedVoices);
-      } catch(e) {}
+        storedBlacklist = JSON.parse(blacklistedStr);
+      } catch (e) {}
     }
-    blacklistedVoicesInput.value = blacklistedVoicesList.join(', ');
+    voices.forEach(voice => {
+      const option = document.createElement('option');
+      option.value = voice.name;
+      option.textContent = `${voice.name} (${voice.lang})`;
+      if (storedBlacklist.includes(voice.name)) {
+        option.selected = true;
+      }
+      blacklistedVoicesSelect.appendChild(option);
+    });
   }
 
   function saveVoiceSettings() {
     const pickEnabled = voicePickToggle.checked;
     localStorage.setItem('pickVoiceEnabled', pickEnabled);
-    let blacklistStr = blacklistedVoicesInput.value;
-    let blacklist = blacklistStr.split(',')
-         .map(s => s.trim())
-         .filter(s => s.length > 0);
-    localStorage.setItem('blacklistedVoices', JSON.stringify(blacklist));
+    const selectedOptions = Array.from(blacklistedVoicesSelect.selectedOptions).map(option => option.value);
+    localStorage.setItem('blacklistedVoices', JSON.stringify(selectedOptions));
 
     applyVoiceBlacklist();
     updateVoiceSettingsButton();
@@ -66,7 +73,7 @@
     let blacklist = [];
     if (blacklistedStr) {
       try {
-         blacklist = JSON.parse(blacklistedStr);
+        blacklist = JSON.parse(blacklistedStr);
       } catch (e) {}
     }
     return allVoices.filter(v => !blacklist.includes(v.name));
@@ -112,5 +119,4 @@
   };
 
   updateVoiceSettingsButton();
-
 })();
